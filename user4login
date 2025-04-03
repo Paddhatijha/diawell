@@ -1,0 +1,98 @@
+#include <iostream>
+#include <conio.h>
+#include <windows.h> 
+
+using namespace std;
+
+void setColor(int color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+bool manager::login() {
+    persons* person = nullptr;
+
+    // 🎨 Setting colors
+    setColor(11); // Light Cyan Color
+    cout << endl;
+    cout << "╔════════════════════════════════════════════════════════════════════════════════════╗" << endl;
+    setColor(14); // Yellow Color
+    cout << "║                                🔐 LOGIN PORTAL                                     ║" << endl;
+    setColor(11);
+    cout << "╠════════════════════════════════════════════════════════════════════════════════════╣" << endl;
+
+    setColor(15); // White color for normal text
+    cout << "║ Please Enter Your User Name To Login:                                             ║" << endl;
+    setColor(12); // Red Color for Warning
+    cout << "║ ⚠️  WARNING: DO NOT USE SPACES IN YOUR NAME!                                      ║" << endl;
+    
+    setColor(15);
+    cout << "║ Or Enter Q To Return To Menu:                                                     ║" << endl;
+    cout << "╚════════════════════════════════════════════════════════════════════════════════════╝" << endl << endl;
+
+    setColor(10); // Green Color
+    cout << "👉 Username: ";
+    setColor(15);
+    
+    string name;
+    cin >> name;
+
+    if ((name == "q") || (name == "Q")) {
+        return false;
+    }
+
+    setColor(11);
+    cout << endl;
+    cout << "╔════════════════════════════════════════════════════════════════════════════════════╗" << endl;
+    setColor(14);
+    cout << "║                                🔑 PASSWORD ENTRY                                  ║" << endl;
+    setColor(11);
+    cout << "╠════════════════════════════════════════════════════════════════════════════════════╣" << endl;
+    
+    setColor(15);
+    cout << "║ Please Enter Your Password:                                                       ║" << endl;
+    setColor(12);
+    cout << "║ ⚠️  WARNING: DO NOT USE SPACES IN YOUR PASSWORD!                                  ║" << endl;
+    setColor(15);
+    cout << "║ Or Enter Q To Return To Menu:                                                     ║" << endl;
+    cout << "╚════════════════════════════════════════════════════════════════════════════════════╝" << endl << endl;
+
+    string password;
+    char ch;
+    
+    setColor(13); // Magenta Color
+    cout << "╔════════════════════════════╗" << endl;
+    cout << "║ 🔑 Password: ";
+    setColor(15);
+
+    while (true) {
+        ch = _getch();
+        if (ch == '\r') {
+            break;
+        } else if (ch == '\b' && !password.empty()) {
+            cout << "\b \b";
+            password.pop_back();
+        } else if (ch != '\b') {
+            cout << '*';
+            password += ch;
+        }
+    }
+
+    setColor(13);
+    cout << " ║" << endl;
+    cout << "╚════════════════════════════╝" << endl << endl;
+
+    setColor(15); // Reset to normal white
+
+    if ((password == "q") || (password == "Q")) {
+        return false;
+    }
+
+    person = storage(name, password);
+    if (person != nullptr) {
+        play(person);
+        options(person);
+        return false;
+    }
+
+    return false;
+}
